@@ -1,0 +1,296 @@
+# 🚀 How to Host a Next.js App in Production on Ubuntu VPS with Domain Pointing
+
+A complete guide to deploying a Next.js app with NGINX, PM2, and HTTPS.
+
+---
+
+## 🧰 Prerequisites
+
+* An Ubuntu VPS with root access
+* A domain name
+* SSH terminal (e.g., CMD, Terminal, PuTTY)
+
+---
+
+## 🔐 Step 0: Access Your VPS via SSH
+
+```bash
+ssh -p PORT USERNAME@HOST_IP
+```
+
+**Example:**
+
+```bash
+ssh -p 22 abhi@203.32.44.92
+ssh root@194.87.34.23
+```
+
+This command establishes a secure connection to your remote server.
+
+---
+
+## 🛠 Step 1: Install Required Packages
+
+```bash
+sudo apt update && sudo apt upgrade
+sudo apt install nginx git
+```
+
+## Download node js 
+https://nodejs.org/en/download
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+```
+## Download pm2
+```bash
+npm install -g pm2@latest
+```
+* `apt update && upgrade`: Updates your system packages.
+* `apt install nginx git`: Installs the web server and Git.
+* `nvm` & `node`: Ensures Node.js is installed via Node Version Manager.
+* `pm2`: Process manager to run your app continuously.
+
+### 🔍 Verify Installation
+
+```bash
+nginx -v
+node -v
+npm -v
+git --version
+pm2 --version
+```
+
+### 🟢 Add PM2 to Startup
+
+```bash
+sudo pm2 startup
+```
+
+### 🔒 UFW Firewall
+
+```bash
+sudo ufw enable
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw allow ssh
+sudo ufw status verbose
+```
+
+Enable and configure firewall to allow essential services.
+
+### 🚪 Exit Server
+
+```bash
+exit
+```
+
+---
+
+## 🌐 Step 2: Point Your Domain
+
+Login to your domain registrar > DNS Management:
+
+```
+Type    Name    Value             TTl 
+A       @       YOUR_SERVER_IP    14400
+A       www     YOUR_SERVER_IP    300
+AAAA    @       YOUR_IPV6         14400
+AAAA    www     YOUR_IPV6
+```
+
+---
+
+## 📁 Step 3: Transfer Your Project
+
+### 📦 Option 1: SCP (Secure Copy)
+
+```bash
+scp -P PORT yourproject.zip user@SERVER_IP
+```
+
+Then login and unzip:
+
+```bash
+ssh -p PORT user@SERVER_IP
+unzip yourproject.zip
+```
+
+### 🌍 Option 2: GitHub Repo
+
+1. Push your project to a private repo.
+2. Create SSH key on server:
+
+```bash
+ssh-keygen -t ed25519 -C "you@example.com"
+cat ~/.ssh/id_ed25519.pub
+```
+
+3. Paste key in GitHub > Settings > Deploy Keys.
+4. Clone repo:
+
+```bash
+git clone git@github.com:username/repo.git
+```
+
+---
+
+## ⚙️ Step 4: Configure NGINX
+
+Create virtual host:
+
+```bash
+sudo nano /etc/nginx/sites-available/yourdomain.com
+```
+
+Paste:
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;
+    server_name yourdomain.com www.yourdomain.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+Link and test:
+
+```bash
+sudo ln -s /etc/nginx/sites-available/yourdomain.com /etc/nginx/sites-enabled/yourdomain.com
+sudo nginx -t
+```
+after running ngnix -t it will show sucessfull test
+---
+
+## 📦 Step 5: Build Your Next.js App
+
+```bash
+cd ~/yourproject
+# if have .env file than create that first
+npm install
+npm run build
+```
+
+---
+
+## 🔁 Step 6: PM2 Configuration
+
+Create config:
+
+```bash
+nano ecosystem.config.js
+```
+
+Paste:
+
+```js
+module.exports = {
+  apps: [
+    {
+      name: "myapp",
+      script: "npm start",
+      port: 3000,
+    },
+  ],
+};
+```
+
+Run & save:
+
+```bash
+pm2 start ecosystem.config.js
+pm2 save
+pm2 status
+```
+
+---
+
+## 🔄 Step 7: Restart Services
+
+```bash
+sudo service nginx restart
+```
+
+To update code:
+
+```bash
+git pull
+npm run build
+pm2 reload myapp
+```
+
+---
+
+## 🔒 Enable HTTPS with Certbot
+
+### Install Certbot:
+
+```bash
+sudo apt update
+sudo apt install python3-certbot-nginx
+```
+
+### Generate Certificate:
+
+```bash
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+```
+
+Follow the prompts.
+
+### Reload NGINX:
+
+```bash
+sudo systemctl reload nginx
+```
+
+### Auto-Renew SSL:
+
+```bash
+sudo systemctl enable certbot.timer
+sudo certbot renew --dry-run
+```
+
+---
+
+## ✅ Final Test
+
+Visit `https://yourdomain.com` to verify:
+
+* Your app loads
+* HTTPS is active
+
+---
+
+## 🎉 Conclusion
+
+Your Next.js app is now live in production with:
+
+* 🔁 PM2 for reliability
+* 🌐 NGINX as reverse proxy
+* 🔒 Certbot for HTTPS
+
+Happy coding! 🧑‍💻
+
+---
+
+# if your website is working properly than how can change the code or pull from github
+- git pull  in your directory. 
+- npm run buiuld.
+- pm2 reload 0 -> this is the process id .
+- pm2 status -> from here you can see process id.
+
+
+# Now i am sujjesting you to go to these two url if you want something in detail 
+1. https://github.com/GreatStackDev/notes/blob/main/Deploy_MERN_on_VPS.md
+2. https://codebhaiya.com/blog/how-to-point-domain-and-host-a-next.js-app-in-production-on-an-ubuntu-vps

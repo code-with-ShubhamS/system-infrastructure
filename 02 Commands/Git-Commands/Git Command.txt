@@ -1,0 +1,70 @@
+GitHub is a website and git is a tool. Mostly developer used git to push their code (using terminal) ;
+
+upload file on git hub
+git init
+git status
+git add .
+git commit -m("initial commit")
+git branch -M main  to rename master branch 
+git remote add origin https://github.com/code-with-ShubhamS/News-Generator-.git
+git push -u origin main  using -u we will push our code using (git push)
+
+
+Use when we import file from GitHub and then push it 
+git clone Link
+git add .
+git commit -m "Shubham Pushing it"
+git push origin main 
+
+
+
+BRANCH COMMANDS
+git branch (to check the branch)
+git branch -M main (to rename the branch)
+git checkout branchName (to Navigate in branch )
+git checkout -b new_Branch (to create a new branch)
+git branch -d branch Name (to delete the branch )
+
+
+MERGE CODE (ADDING BRANCHES CODE INTO MAIN)
+
+if we merge two branches it doesn't show in the local host so you can simply pull all the changes.
+git pull origin main
+
+
+FIXIBG MISTAKE
+
+1. Staged changes (Means we add a unwanted file)
+git reset file Name 
+git reset (to reset all the challenges)
+
+
+2. Commited changes (for one commit)
+git reset HEAD~1  (reset the last commit)
+
+
+3. commited changes (for many commit)
+git reset <-commit hash-> 
+git reset --hard <-commit hash->
+
+git long (show all the commits) 
+
+
+
+FORK (a rough copy)
+used in contribution 
+
+fork-> repository create -> changes -> pull request to main file 
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+step 1 => Install python and when installing tick the both option
+
+step 2 => Install chocklate open powerShell as administrator mode  = Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+
+step 3=> open cmd as administratotr = pip install spotdl
+step 4 => choco install ffmpeg
+
+
+ FOR INSTALLING THE PLAYLIST IN PARTICULAR FOLDER
+open terminal from the folder where we want to download playlist 
+
+spotdl https://open.spotify.com/track/3FrY3M9izNqPZRWuBAqDFM?si=1d757de40f7a4af7
