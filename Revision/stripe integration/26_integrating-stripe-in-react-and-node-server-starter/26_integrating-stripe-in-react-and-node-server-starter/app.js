@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 
 const ordersFilePath = path.join(process.cwd(), "orders.json");
-const stripe = new Stripe('');
+const stripe = new Stripe();
 
 export function updateOrderStatus(sessionId, status) {
   try {
