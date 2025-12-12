@@ -52,8 +52,9 @@ Node.js is installed system-wide, but the app will run under the `shubham` user.
 
 
 ## 4. Install MongoDB (system level, as root) If required 
-https://github.com/code-with-ShubhamS/system-infrastructure/Install-MongoDB-On_VPS.md
+[Click here](https://github.com/code-with-ShubhamS/system-infrastructure/blob/eb6cfd6aa36e804ef01f41616de5681fc0ad84fd/Deploying%20Applications/Install-MongoDB-On_VPS.md)
 
+[Click Here for more detail](https://github.com/code-with-ShubhamS/system-infrastructure/tree/eb6cfd6aa36e804ef01f41616de5681fc0ad84fd/Revision/MongoDB)
 ## 5. Create a non-root user for daily work
 
 Create a user (example: `shubham`) and give it `sudo` access:
