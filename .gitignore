@@ -1,4 +1,4 @@
-/.env
 .env
 .env.*
 !.env.example
+CI-CD Pipeline Detail/Deploying Using another server/.env
