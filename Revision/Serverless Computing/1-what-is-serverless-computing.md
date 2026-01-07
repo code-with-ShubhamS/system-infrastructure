@@ -42,7 +42,7 @@ Serverless computing exists to solve **this inefficiency**.
 ---
 
 ## 🕰️ AWS Lambda and the Rise of Serverless
-
+```Lambda is event-driven, not request-driven only.```
 In 2014, AWS launched **AWS Lambda**.
 
 It introduced a new idea:
